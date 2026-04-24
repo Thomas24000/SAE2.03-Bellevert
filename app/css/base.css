@@ -5,3 +5,5 @@
 @import "./utilities.css" layer(utilities);
 
 @import "../component/NavBar/style.css" layer(components);
+@import "../component/MovieCard/style.css" layer(components);
+@import "../component/Carrousel/style.css" layer(components);

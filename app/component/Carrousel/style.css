@@ -1,0 +1,15 @@
+.carroussel__container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carrousel{
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    scrollbar-width: none
+}
+
+.carroussel__empty{
+  font-family: var(--ff-sans);
+}

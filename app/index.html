@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <title>SAE2.03 APP</title>
@@ -13,7 +13,12 @@
     <section id="content"></section>
 
     <script type="module">
+      import { DataMovie } from "./data/dataMovie.js";
+
       import { NavBar } from "./component/NavBar/script.js";
+      import { Carrousel } from "./component/Carrousel/script.js";
+
+      let data = await DataMovie.requestMovies();
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -22,12 +27,13 @@
 
       C.handlerAbout = function () {
         alert(
-          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !"
+          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
         );
       };
 
       C.start = function () {
         V.renderNavBar("C.handlerAbout()");
+        V.renderCarrousel(data);
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -43,6 +49,11 @@
       V.renderNavBar = function (hAbout) {
         let header = document.querySelector("#header");
         header.innerHTML = NavBar.format(hAbout);
+      };
+
+      V.renderCarrousel = function (data, css = "") {
+        let carrousel = document.querySelector("#content");
+        carrousel.innerHTML = Carrousel.format(data, css);
       };
 
       C.start(); // Démarre l'application
