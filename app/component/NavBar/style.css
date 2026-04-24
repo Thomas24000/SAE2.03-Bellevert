@@ -1,21 +1,35 @@
+/* La barre de navigation (le conteneur global) */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 3rem;
-  color: var(--color-fg);
-  background-color: var(--color-bg);
+  background-color: var(--color-black); /* Plus sombre que le fond de la page pour le contraste */
+  padding: 1rem 2rem; /* ~16px en haut/bas, ~32px sur les côtés */
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5); /* L'ombre qui la fait "ressortir" en 3D */
+  
+  /* L'astuce magique : la barre reste fixée en haut au scroll ! */
+  position: sticky;
+  top: 0;
+  z-index: 100; /* Assure que les films passent en dessous et pas par-dessus */
+}
 
-  .navbar__item {
-    --_offset: 0.2rem;
-    padding: 0.5rem 1rem;
-    text-decoration: underline;
-    text-decoration-thickness: 0.1rem;
-    text-underline-offset: var(--_offset);
-    cursor: pointer;
-    transition: text-underline-offset 0.2s ease-in-out;
-    &:hover {
-      --_offset: 0.5rem;
-    }
-  }
+/* La liste qui contient les boutons */
+.navbar__list {
+  display: flex; /* Aligne les éléments horizontalement */
+  gap: 2rem; /* ~32px d'espace entre "Home" et "About" */
+  margin: 0;
+  padding: 0;
+  list-style: none; /* Enlève les vieux points de liste */
+}
+
+/* Les boutons cliquables */
+.navbar__item {
+  color: var(--color-gray-light); /* Gris clair par défaut */
+  font-size: 1.125rem; /* ~18px, taille parfaite pour un menu */
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease; /* Prépare une animation fluide */
+}
+
+/* L'effet quand on passe la souris dessus */
+.navbar__item:hover {
+  color: var(--color-white); /* Le texte s'illumine en blanc pur */
+  transform: translateY(-0.125rem); /* Le texte monte d'un tout petit millimètre (~2px) */
 }

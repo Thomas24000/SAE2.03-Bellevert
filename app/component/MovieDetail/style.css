@@ -1,0 +1,59 @@
+/* Le conteneur principal : coupe l'écran en deux sur PC, empile sur mobile */
+.detail__container {
+  display: flex;
+  flex-wrap: wrap; /* Permet de passer à la ligne sur petit écran */
+  gap: 3rem; /* ~48px d'espace entre la gauche et la droite */
+  padding: 2rem; /* ~32px autour de la page */
+  max-width: 75rem; /* ~1200px max pour ne pas que ça s'étire à l'infini sur grand écran */
+  margin: 0 auto; /* Centre le tout sur la page */
+}
+
+/* Les colonnes gauche et droite */
+.left, .right {
+  flex: 1 1 25rem; /* Chaque colonne prend la moitié, mais passe en dessous si l'écran fait moins de 400px (~25rem) */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* ~24px d'espace entre chaque élément d'une même colonne */
+}
+
+/* La typographie des titres */
+.title {
+  font-size: 2.5rem; /* ~40px */
+  font-weight: 700;
+  margin: 0 0 0.5rem 0; /* Un peu d'espace sous le titre */
+}
+
+/* Les petites infos (date, durée, age) : on les met en gris clair pour contraster */
+.date, .duree, .age {
+  font-size: 1rem; /* ~16px */
+  color: var(--color-gray-light);
+  font-weight: 500;
+  margin: 0; 
+}
+
+/* Le texte du synopsis */
+.Synopsis {
+  font-size: 1.125rem; /* ~18px, très lisible */
+  line-height: 1.6; /* Aère les lignes de texte */
+  color: var(--color-fg);
+  margin: 0;
+}
+
+/* L'affiche du film à gauche */
+.img__container--img {
+  width: 100%;
+  max-width: 25rem; /* ~400px max de large */
+  height: auto;
+  border-radius: 1rem; /* ~16px d'arrondi */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4); /* Petite ombre portée */
+  object-fit: cover;
+}
+
+/* La vidéo YouTube à droite */
+.trailer {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* MAGIQUE : force le format vidéo sans se soucier de la hauteur ! */
+  border: none; /* Enlève la bordure moche par défaut des iframes */
+  border-radius: 1rem; /* Mêmes arrondis que l'image */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+}

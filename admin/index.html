@@ -21,7 +21,8 @@
 
       C.start = function () {
         V.renderLog("Démarrage de l'application");
-        V.renderForm("C.handlerAddMovie(event)");
+        V.renderForm("C.handlerAddMovie");
+        C.loadFormCategories();
       };
 
       C.handlerAddMovie = async function () {
@@ -32,6 +33,20 @@
         if (res.success) {
           form.reset();
         }
+      };
+
+      C.loadFormCategories = async function () {
+        let categories = await DataMovie.requestCategories();
+        let templateOption = `<option value="{{id}}">{{nom}}</option>`;
+        let toutesLesOptions = "";
+        for (let categorie of categories) {
+          let htmlLigne = templateOption;
+          htmlLigne = htmlLigne.replaceAll("{{id}}", categorie.id);
+          htmlLigne = htmlLigne.replaceAll("{{nom}}", categorie.name);
+          toutesLesOptions += htmlLigne;
+        }
+        let selectMenu = document.querySelector(".id_category");
+        selectMenu.innerHTML += toutesLesOptions;
       };
 
       window.V = {};

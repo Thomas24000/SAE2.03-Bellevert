@@ -17,6 +17,7 @@
 
       import { NavBar } from "./component/NavBar/script.js";
       import { Carrousel } from "./component/Carrousel/script.js";
+      import { MovieDetail } from "./component/MovieDetail/script.js";
 
       let data = await DataMovie.requestMovies();
 
@@ -29,6 +30,20 @@
         alert(
           "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
         );
+      };
+
+      C.handlerHome = async function () {
+        let MoviesData = await DataMovie.requestMovies();
+        let htmlList = Carrousel.format(MoviesData);
+        let mainZone = document.querySelector("#content");
+        mainZone.innerHTML = htmlList;
+      };
+
+      C.handlerDetail = async function (id) {
+        let movieData = await DataMovie.requestMoviesDetails(id);
+        let html = MovieDetail.format(movieData);
+        let zonePrincipale = document.querySelector("#content");
+        zonePrincipale.innerHTML = html;
       };
 
       C.start = function () {
@@ -54,6 +69,11 @@
       V.renderCarrousel = function (data, css = "") {
         let carrousel = document.querySelector("#content");
         carrousel.innerHTML = Carrousel.format(data, css);
+      };
+
+      V.renderMovieDetail = function (hDetail, css = "") {
+        let detail = document.querySelector("#content");
+        detail.innerHTML = MovieDetail.format(hDetail, css);
       };
 
       C.start(); // Démarre l'application

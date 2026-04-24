@@ -1,15 +1,47 @@
-.carroussel__container {
-  width: 100%;
-  overflow: hidden;
-}
-
-.carrousel{
-    display: flex;
-    flex-direction: row;
-    overflow-x: scroll;
-    scrollbar-width: none
-}
-
-.carroussel__empty{
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
   font-family: var(--ff-sans);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 1.25rem 0 0 1.25rem; 
+}
+
+.carrousel__container {
+  overflow-x: auto;
+  padding-bottom: 1.5rem;
+  scrollbar-width: none;
+}
+.carrousel__container::-webkit-scrollbar {
+  display: none;
+}
+
+.carrousel {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 1.25rem;
+  margin: 0;
+  list-style: none;
+}
+
+.carroussel__item {
+  flex: 0 0 auto;
+  width: 13.75rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.carroussel__item:hover {
+  transform: translateY(-0.5rem);
+}
+
+.carroussel__item img {
+  width: 13.75rem;
+  height: 20.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  object-fit: cover;
 }
