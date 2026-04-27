@@ -18,6 +18,7 @@
       import { NavBar } from "./component/NavBar/script.js";
       import { Carrousel } from "./component/Carrousel/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
+      import { MovieCategory } from "./component/MovieCategory/script.js";
 
       let data = await DataMovie.requestMovies();
 
@@ -46,9 +47,18 @@
         zonePrincipale.innerHTML = html;
       };
 
+      C.handlerHomeCategories = async function () {
+        const categories = await DataMovie.requestCategories();
+        const allMovies = await DataMovie.requestMovies();
+        V.renderMovieCategory({
+          categories: categories,
+          movies: allMovies,
+        });
+      };
+
       C.start = function () {
         V.renderNavBar("C.handlerAbout()");
-        V.renderCarrousel(data);
+        C.handlerHomeCategories();
       };
 
       // Vue (contient tout ce qui est relatif à l'affichage)
@@ -74,6 +84,24 @@
       V.renderMovieDetail = function (hDetail, css = "") {
         let detail = document.querySelector("#content");
         detail.innerHTML = MovieDetail.format(hDetail, css);
+      };
+
+      V.renderMovieCategory = function (data) {
+        let htmlGlobal = "";
+        for (const cat of data.categories) {
+          const filteredMovies = data.movies.filter(
+            (m) => m.id == cat.id,
+          );
+          if (filteredMovies.length > 0) {
+            let moviesCardsHtml = "";
+            for (const movie of filteredMovies) {
+              moviesCardsHtml += MovieCard.format(movie);
+            }
+            htmlGlobal += MovieCategory.format(cat.name, moviesCardsHtml);
+          }
+        }
+        let zonePrincipale = document.querySelector("#content");
+        zonePrincipale.innerHTML = htmlGlobal;
       };
 
       C.start(); // Démarre l'application

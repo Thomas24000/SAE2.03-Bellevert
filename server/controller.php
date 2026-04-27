@@ -63,7 +63,6 @@ function readIdController(){
 }
 
 function readCategoriesController() {
-    // On demande au modèle de récupérer TOUTES les catégories
     $categories = getAllCategories(); 
 
     if ($categories === false) {

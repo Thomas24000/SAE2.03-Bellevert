@@ -80,13 +80,11 @@ function getMovieById($id){
 function getAllCategories() {
     $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME.";charset=utf8", DBLOGIN, DBPWD);
     
-    // Remplace "Category" par le VRAI nom de ta table dans ta base de données !
     $sql = "SELECT * FROM Category"; 
     
     $stmt = $cnx->prepare($sql);
     $stmt->execute();
     
-    // fetchAll pour récupérer tout le tableau des catégories
     $res = $stmt->fetchAll(PDO::FETCH_OBJ); 
     
     return $res;
