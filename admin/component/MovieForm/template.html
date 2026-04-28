@@ -1,7 +1,7 @@
 <div class="movie-form-container">
   <h2>Ajouter un nouveau film</h2>
 
-  <form class="add-movie-form">
+  <form class="add-movie-form" onsubmit="return false;">
     <div class="form-group">
       <label for="name">Titre du film *</label>
       <input type="text" id="name" name="name" required />
@@ -82,7 +82,7 @@
       />
     </div>
 
-    <button onsubmit="{{handler}}" type="submit" class="btn-submit">
+    <button onclick="{{handler}}" type="button" class="btn-submit">
       Ajouter à la base de données
     </button>
   </form>

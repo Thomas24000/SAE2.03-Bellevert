@@ -6,7 +6,6 @@ require("model.php");
 
 function addMovieController()
 {
-
     $name = $_REQUEST['name'];
     $director = $_REQUEST['director'];
     $year = $_REQUEST['year'];
@@ -20,9 +19,15 @@ function addMovieController()
     $ok = addMovie($name, $director, $year, $length, $description, $id_category, $min_age, $image, $trailer);
 
     if ($ok != 0) {
-        return [True, "Le film '$name' a bien été ajouté au catalogue !"];
+        return [
+            "success" => true, 
+            "message" => "Le film '$name' a bien été ajouté au catalogue !"
+        ];
     } else {
-        return false;
+        return [
+            "success" => false, 
+            "message" => "Erreur lors de l'ajout du film."
+        ];
     }
 }
 
@@ -46,11 +51,12 @@ function readMoviesController()
     return $movies;
 }
 
-function readIdController(){
+function readIdController()
+{
     if (!isset($_REQUEST['id']) || empty($_REQUEST['id'])) {
         return false;
     }
-    
+
     $id = $_REQUEST['id'];
 
     $movie = getMovieById($id);
@@ -62,13 +68,34 @@ function readIdController(){
     return $movie;
 }
 
-function readCategoriesController() {
-    $categories = getAllCategories(); 
+function readCategoriesController()
+{
+    $categories = getAllCategories();
 
     if ($categories === false) {
         return false;
     }
     return $categories;
+}
+
+function addProfileController(){
+    $name = $_REQUEST['name'];
+    $avatar = $_REQUEST['avatar'];
+    $age_restriction = $_REQUEST['age_restriction'];
+
+    $ok = addProfile($name, $avatar, $age_restriction);
+
+    if ($ok != 0) {
+        return [
+            "success" => true, 
+            "message" => "Le profile de '$name' a bien été ajouté !"
+        ];
+    } else {
+        return [
+            "success" => false, 
+            "message" => "Erreur lors de l'ajout du profile."
+        ];
+    }
 }
 
 ?>

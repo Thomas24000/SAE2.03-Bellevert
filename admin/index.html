@@ -11,17 +11,22 @@
 
     <section id="movie-form"></section>
 
+    <section id="profil-form"></section>
+
     <script type="module">
       import { Log } from "./component/Log/script.js";
       import { MovieForm } from "./component/MovieForm/script.js";
+      import { AddProfil } from "./component/AddProfil/script.js";
 
       import { DataMovie } from "./data/dataMovie.js";
+      import { DataProfile } from "./data/dataProfile.js";
 
       window.C = {};
 
       C.start = function () {
         V.renderLog("Démarrage de l'application");
-        V.renderForm("C.handlerAddMovie");
+        V.renderForm("C.handlerAddMovie()");
+        V.renderFormProfil("C.handlerAddProfil()");
         C.loadFormCategories();
       };
 
@@ -29,6 +34,16 @@
         let form = document.querySelector(".add-movie-form");
         let fd = new FormData(form);
         let res = await DataMovie.add(fd);
+        V.renderLog(res.message);
+        if (res.success) {
+          form.reset();
+        }
+      };
+
+      C.handlerAddProfil = async function () {
+        let form = document.querySelector(".add-profile");
+        let fd = new FormData(form);
+        let res = await DataProfile.add(fd);
         V.renderLog(res.message);
         if (res.success) {
           form.reset();
@@ -59,6 +74,11 @@
       V.renderForm = async function (handler) {
         let content = document.querySelector("#movie-form");
         content.innerHTML = await MovieForm.format(handler);
+      };
+
+      V.renderFormProfil = async function (handler) {
+        let content = document.querySelector("#profil-form");
+        content.innerHTML = await AddProfil.format(handler);
       };
 
       C.start();

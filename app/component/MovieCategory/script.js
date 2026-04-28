@@ -6,7 +6,8 @@ let MovieCategory = {};
 MovieCategory.format = function (name, moviesHtml) {
   let html = template;
   html = html.replace('{{name}}', name);
-  html = html.replace('{{category}}', moviesHtml);
+  html = html.replace('{{carrousel}}', moviesHtml);
+  
   return html;
 };
 

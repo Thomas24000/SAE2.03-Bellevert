@@ -90,4 +90,22 @@ function getAllCategories() {
     return $res;
 }
 
+function addProfile($n, $av, $age){
+    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME.";charset=utf8", DBLOGIN, DBPWD); 
+
+    $sql = "INSERT INTO Profile (name, avatar, age_restriction) 
+            VALUES (:name, :avatar, :age_restriction)";
+
+    $stmt = $cnx->prepare($sql);
+
+    $stmt->bindParam(':name', $n);
+    $stmt->bindParam(':avatar', $av);
+    $stmt->bindParam(':age_restriction', $age);
+
+    $stmt->execute();
+
+    $res = $stmt->rowCount(); 
+    return $res;
+}
+
 ?>

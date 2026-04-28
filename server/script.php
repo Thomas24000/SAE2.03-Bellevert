@@ -33,8 +33,12 @@ if (isset($_REQUEST['todo'])) {
       break;
 
     case 'readcategories':
-    $data = readCategoriesController();
-    break;
+      $data = readCategoriesController();
+      break;
+
+    case 'addProfile':
+      $data = addProfileController();
+      break;
 
     default:
       echo json_encode(['success' => false, 'message' => '[error] Unknown todo value']);

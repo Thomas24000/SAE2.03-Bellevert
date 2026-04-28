@@ -17,6 +17,7 @@
 
       import { NavBar } from "./component/NavBar/script.js";
       import { Carrousel } from "./component/Carrousel/script.js";
+      import { MovieCard } from "./component/MovieCard/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
 
@@ -34,10 +35,7 @@
       };
 
       C.handlerHome = async function () {
-        let MoviesData = await DataMovie.requestMovies();
-        let htmlList = Carrousel.format(MoviesData);
-        let mainZone = document.querySelector("#content");
-        mainZone.innerHTML = htmlList;
+        window.location.reload();
       };
 
       C.handlerDetail = async function (id) {
@@ -89,9 +87,7 @@
       V.renderMovieCategory = function (data) {
         let htmlGlobal = "";
         for (const cat of data.categories) {
-          const filteredMovies = data.movies.filter(
-            (m) => m.id == cat.id,
-          );
+          const filteredMovies = data.movies.filter((m) => m.id_category === cat.id);
           if (filteredMovies.length > 0) {
             let moviesCardsHtml = "";
             for (const movie of filteredMovies) {
