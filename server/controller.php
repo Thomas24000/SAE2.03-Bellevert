@@ -132,6 +132,32 @@ function updateProfileController()
     }
 }
 
+function addFavoriteController()
+{
+    $id_p = $_REQUEST['id_profile'];
+    $id_m = $_REQUEST['id_movie'];
+
+    $lignesAjoutees = addFavorite($id_p, $id_m);
+
+    if ($lignesAjoutees > 0) {
+        return [
+            "success" => true,
+            "message" => "Le film a bien été ajouté à vos favoris ! ❤️"
+        ];
+    } else {
+        return [
+            "success" => false,
+            "message" => "Ce film est déjà dans vos favoris ! ⭐"
+        ];
+    }
+}
+
+function readFavoritesController()
+{
+    $id_p = $_REQUEST['id_profile'];
+    return getFavorites($id_p);
+}
+
 
 
 ?>

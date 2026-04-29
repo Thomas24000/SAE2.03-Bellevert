@@ -156,4 +156,28 @@ function updateProfile($id, $n, $av, $age)
     return $stmt->execute();
 }
 
+function addFavorite($id_p, $id_m) {
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+    $sql = "INSERT IGNORE INTO Favorite (id_profile, id_movie) VALUES (:id_p, :id_m)";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_p', $id_p);
+    $stmt->bindParam(':id_m', $id_m);
+    
+    $stmt->execute();
+    
+    return $stmt->rowCount(); 
+}
+
+function getFavorites($id_p) {
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+
+    $sql = "SELECT m.* FROM Movie m 
+            INNER JOIN Favorite f ON m.id = f.id_movie 
+            WHERE f.id_profile = :id_p";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_p', $id_p);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
 ?>

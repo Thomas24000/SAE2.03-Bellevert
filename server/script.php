@@ -48,11 +48,20 @@ if (isset($_REQUEST['todo'])) {
       $data = updateProfileController();
       break;
 
+    case 'addFavorite':
+      $data = addFavoriteController();
+      break;
+      
+    case 'readFavorites':
+      $data = readFavoritesController();
+      break;
+
     default:
       echo json_encode(['success' => false, 'message' => '[error] Unknown todo value']);
       http_response_code(400); // 400 == "Bad request"
       exit();
   }
+
 
   if ($data === false) {
     echo json_encode(['success' => false, 'message' => '[error] Controller returns false']);

@@ -26,6 +26,7 @@
 
       let profiles = [];
       let age_active_profile = 0;
+      let id_active_profile = null;
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -64,6 +65,7 @@
       C.handlerSelectProfile = function () {
         let selectElement = document.querySelector(".profile-selector");
         let selectedId = parseInt(selectElement.value);
+        id_active_profile = selectedId;
         let selectedProfile = profiles.find(
           (profil) => profil.id_profile === selectedId,
         );
@@ -79,6 +81,21 @@
         C.handlerHomeCategories();
       };
 
+      C.handlerAddFavorite = async function (id_movie) {
+        if (!id_active_profile) {
+          alert("Veuillez sélectionner un profil d'abord ! 👤");
+          return;
+        }
+        let res = await DataMovie.addFavorite(id_active_profile, id_movie);
+        alert(res.message);
+        let btnFav = document.querySelector(".btn-fav");
+        if (btnFav) {
+          btnFav.disabled = true;
+          btnFav.innerText = "Déjà dans vos favoris ⭐";
+          btnFav.style.backgroundColor = "gray";
+          btnFav.style.cursor = "not-allowed";
+        }
+      };
       // Vue (contient tout ce qui est relatif à l'affichage)
       window.V = {};
 

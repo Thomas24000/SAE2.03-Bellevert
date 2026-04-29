@@ -3,19 +3,6 @@ let HOST_URL = "https://mmi.unilim.fr/~bellevert1/SAE2.03-Bellevert";//"http://m
 
 let DataMovie = {};
 
-DataMovie.requestMovies = async function(){
-    // fetch permet d'envoyer une requête HTTP à l'URL spécifiée. 
-    // L'URL est construite en concaténant HOST_URL à "/server/script.php?direction=" et la valeur de la variable dir. 
-    // L'URL finale dépend de la valeur de HOST_URL et de dir.
-    let answer = await fetch(HOST_URL + "/server/script.php?todo=readmovies");
-    // answer est la réponse du serveur à la requête fetch.
-    // On utilise ensuite la méthode json() pour extraire de cette réponse les données au format JSON.
-    // Ces données (data) sont automatiquement converties en objet JavaScript.
-    let data = await answer.json();
-    // Enfin, on retourne ces données.
-    return data;
-}
-
 DataMovie.requestMoviesDetails = async function (id) {
     let answer = await fetch(HOST_URL + "/server/script.php?todo=readmovie&id=" + id);
     let texteBrut = await answer.text();
@@ -44,6 +31,16 @@ DataMovie.requestMovies = async function (ageLimit = 0) {
   
   let data = await answer.json();
   return data;
+};
+
+DataMovie.addFavorite = async function (id_profile, id_movie) {
+  let answer = await fetch(`${HOST_URL}/server/script.php?todo=addFavorite&id_profile=${id_profile}&id_movie=${id_movie}`);
+  return await answer.json();
+};
+
+DataMovie.getFavorites = async function (id_profile) {
+  let answer = await fetch(`${HOST_URL}/server/script.php?todo=readFavorites&id_profile=${id_profile}`);
+  return await answer.json();
 };
 
 export {DataMovie};
