@@ -28,13 +28,15 @@
 
       window.C = {};
 
-      C.start = function () {
+      C.start = async function () {
         V.renderLog("Démarrage de l'application");
         V.renderForm("C.handlerAddMovie()");
         V.renderFormProfil("C.handlerAddProfil()");
+        profiles = await DataProfile.read(); 
+
         V.renderEditProfil(
           "C.handlerSelectProfileToEdit()",
-          "C.handlerUpdateProfile",
+          "C.handlerUpdateProfile()",
           profiles,
         );
         C.loadFormCategories();
@@ -74,11 +76,42 @@
         selectMenu.innerHTML += toutesLesOptions;
       };
 
-      C.selectProfileToEdit = async function () {
-        
-      }
+      C.handlerSelectProfileToEdit = function () {
+        let selectElement = document.querySelector("#select_profile");
+        let selectedId = parseInt(selectElement.value);
+        let profilAEditer = profiles.find((p) => p.id_profile === selectedId);
 
-      
+        if (profilAEditer) {
+          document.querySelector("#edit_id").value = profilAEditer.id_profile;
+          document.querySelector("#edit_name").value = profilAEditer.name;
+          document.querySelector("#edit_age").value = profilAEditer.age_restriction;
+          document.querySelector("#edit_avatar").value =
+            profilAEditer.avatar || "";
+        }
+      };
+
+      C.handlerUpdateProfile = async function () {
+        let form = document.querySelector(".edit-profile-form");
+        if (document.querySelector("#edit_id").value === "") {
+          V.renderLog("Veuillez sélectionner un profil à modifier.");
+          return;
+        }
+        let fd = new FormData(form);
+        let res = await DataProfile.update(fd);
+        V.renderLog(res.message);
+        if (res.success) {
+          form.reset();
+          document.querySelector("#select_profile").value = "";
+          profiles = await DataProfile.read();
+          V.renderEditProfil(
+            "C.handlerSelectProfileToEdit()",
+            "C.handlerUpdateProfile()",
+            profiles,
+          );
+        }
+      };
+
+
 
       window.V = {};
 
