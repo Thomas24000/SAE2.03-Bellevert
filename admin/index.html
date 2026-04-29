@@ -13,13 +13,18 @@
 
     <section id="profil-form"></section>
 
+    <section id="edit-form"></section>
+
     <script type="module">
       import { Log } from "./component/Log/script.js";
       import { MovieForm } from "./component/MovieForm/script.js";
       import { AddProfil } from "./component/AddProfil/script.js";
+      import { EditProfile } from "./component/EditProfile/script.js";
 
       import { DataMovie } from "./data/dataMovie.js";
       import { DataProfile } from "./data/dataProfile.js";
+
+      let profiles = [];
 
       window.C = {};
 
@@ -27,6 +32,11 @@
         V.renderLog("Démarrage de l'application");
         V.renderForm("C.handlerAddMovie()");
         V.renderFormProfil("C.handlerAddProfil()");
+        V.renderEditProfil(
+          "C.handlerSelectProfileToEdit()",
+          "C.handlerUpdateProfile",
+          profiles,
+        );
         C.loadFormCategories();
       };
 
@@ -64,6 +74,12 @@
         selectMenu.innerHTML += toutesLesOptions;
       };
 
+      C.selectProfileToEdit = async function () {
+        
+      }
+
+      
+
       window.V = {};
 
       V.renderLog = function (txt) {
@@ -79,6 +95,15 @@
       V.renderFormProfil = async function (handler) {
         let content = document.querySelector("#profil-form");
         content.innerHTML = await AddProfil.format(handler);
+      };
+
+      V.renderEditProfil = async function (hSELECT, hUPDATE, profiles) {
+        let content = document.querySelector("#edit-form");
+        content.innerHTML = await EditProfile.format(
+          hSELECT,
+          hUPDATE,
+          profiles,
+        );
       };
 
       C.start();

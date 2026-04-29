@@ -32,4 +32,18 @@ DataMovie.requestCategories = async function () {
     return data;
 };
 
+DataMovie.requestMovies = async function (ageLimit = 0) {
+  let config = {
+    method: "GET",
+  };
+
+  let answer = await fetch(
+    HOST_URL + "/server/script.php?todo=readmovies&age=" + ageLimit,
+    config
+  );
+  
+  let data = await answer.json();
+  return data;
+};
+
 export {DataMovie};

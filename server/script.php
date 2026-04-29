@@ -40,6 +40,14 @@ if (isset($_REQUEST['todo'])) {
       $data = addProfileController();
       break;
 
+    case 'readProfiles':
+      $data = readProfilesController();
+      break;
+
+    case 'updateProfile':
+      $data = updateProfileController();
+      break;
+
     default:
       echo json_encode(['success' => false, 'message' => '[error] Unknown todo value']);
       http_response_code(400); // 400 == "Bad request"

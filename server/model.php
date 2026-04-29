@@ -10,15 +10,16 @@ define("DBPWD", "bellevert1");
  * Récupère la liste complète des films dans la base de données.
  * * @return array Un tableau d'objets contenant toutes les informations des films.
  */
-function getAllMovies(){
-    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME.";charset=utf8", DBLOGIN, DBPWD);
-    
+function getAllMovies()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+
     $sql = "SELECT id, name, year, length, description, director, id_category, image, trailer, min_age FROM Movie";
-    
+
     $stmt = $cnx->prepare($sql);
-    
+
     $stmt->execute();
-    
+
     $res = $stmt->fetchAll(PDO::FETCH_OBJ);
     return $res;
 }
@@ -41,8 +42,9 @@ function getAllMovies(){
  * Si la requête a réussi, le nombre de lignes affectées sera 1.
  * Si la requête a échoué, le nombre de lignes affectées sera 0.
  */
-function addMovie($n, $dir, $y, $len, $desc, $cat, $age, $img, $trl){
-    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME.";charset=utf8", DBLOGIN, DBPWD); 
+function addMovie($n, $dir, $y, $len, $desc, $cat, $age, $img, $trl)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
 
     $sql = "INSERT INTO Movie (name, director, year, length, description, id_category, min_age, image, trailer) 
             VALUES (:name, :director, :year, :length, :description, :id_category, :min_age, :image, :trailer)";
@@ -61,15 +63,16 @@ function addMovie($n, $dir, $y, $len, $desc, $cat, $age, $img, $trl){
 
     $stmt->execute();
 
-    $res = $stmt->rowCount(); 
+    $res = $stmt->rowCount();
     return $res;
 }
 
-function getMovieById($id){
-    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME.";charset=utf8", DBLOGIN, DBPWD); 
+function getMovieById($id)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
 
     $sql = "SELECT * FROM Movie WHERE id = :id";
-    
+
     $stmt = $cnx->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
@@ -77,21 +80,23 @@ function getMovieById($id){
     return $res;
 }
 
-function getAllCategories() {
-    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME.";charset=utf8", DBLOGIN, DBPWD);
-    
-    $sql = "SELECT * FROM Category"; 
-    
+function getAllCategories()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+
+    $sql = "SELECT * FROM Category";
+
     $stmt = $cnx->prepare($sql);
     $stmt->execute();
-    
-    $res = $stmt->fetchAll(PDO::FETCH_OBJ); 
-    
+
+    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
+
     return $res;
 }
 
-function addProfile($n, $av, $age){
-    $cnx = new PDO("mysql:host=".HOST.";dbname=".DBNAME.";charset=utf8", DBLOGIN, DBPWD); 
+function addProfile($n, $av, $age)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
 
     $sql = "INSERT INTO Profile (name, avatar, age_restriction) 
             VALUES (:name, :avatar, :age_restriction)";
@@ -104,8 +109,51 @@ function addProfile($n, $av, $age){
 
     $stmt->execute();
 
-    $res = $stmt->rowCount(); 
+    $res = $stmt->rowCount();
     return $res;
+}
+
+function getAllProfiles()
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+    $sql = "SELECT * FROM Profile";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute();
+    $res = $stmt->fetchAll(PDO::FETCH_OBJ);
+    return $res;
+}
+
+function readMoviesByAge($ageLimit)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+    if ($ageLimit == 0) {
+        $sql = "SELECT * FROM Movie";
+        $stmt = $cnx->prepare($sql);
+    } else {
+        $sql = "SELECT * FROM Movie WHERE min_age <= :age";
+        $stmt = $cnx->prepare($sql);
+        $stmt->bindParam(':age', $ageLimit, PDO::PARAM_INT);
+    }
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+function updateProfile($id, $n, $av, $age)
+{
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+
+    $sql = "UPDATE Profile 
+            SET name = :name, avatar = :avatar, age_restriction = :age 
+            WHERE id_profile = :id";
+    $stmt = $cnx->prepare($sql);
+
+    $stmt->bindParam(':name', $n);
+    $stmt->bindParam(':avatar', $av);
+    $stmt->bindParam(':age', $age);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+    return $stmt->execute();
 }
 
 ?>

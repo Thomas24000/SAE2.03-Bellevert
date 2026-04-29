@@ -20,12 +20,12 @@ function addMovieController()
 
     if ($ok != 0) {
         return [
-            "success" => true, 
+            "success" => true,
             "message" => "Le film '$name' a bien été ajouté au catalogue !"
         ];
     } else {
         return [
-            "success" => false, 
+            "success" => false,
             "message" => "Erreur lors de l'ajout du film."
         ];
     }
@@ -41,14 +41,16 @@ function addMovieController()
  */
 function readMoviesController()
 {
+    $age = isset($_REQUEST['age']) ? intval($_REQUEST['age']) : 0;
 
-    $movies = getAllMovies();
+    $categories = getAllCategories();
 
-    if ($movies === false) {
-        return false;
-    }
+    $movies = readMoviesByAge($age);
 
-    return $movies;
+    return [
+        "categories" => $categories,
+        "movies" => $movies
+    ];
 }
 
 function readIdController()
@@ -78,7 +80,8 @@ function readCategoriesController()
     return $categories;
 }
 
-function addProfileController(){
+function addProfileController()
+{
     $name = $_REQUEST['name'];
     $avatar = $_REQUEST['avatar'];
     $age_restriction = $_REQUEST['age_restriction'];
@@ -87,15 +90,48 @@ function addProfileController(){
 
     if ($ok != 0) {
         return [
-            "success" => true, 
-            "message" => "Le profile de '$name' a bien été ajouté !"
+            "success" => true,
+            "message" => "Le profile de '$name' a bien été ajouté J!"
         ];
     } else {
         return [
-            "success" => false, 
+            "success" => false,
             "message" => "Erreur lors de l'ajout du profile."
         ];
     }
 }
+
+function readProfilesController()
+{
+    $profiles = getAllProfiles();
+    if ($profiles === false) {
+        return [];
+    }
+    return $profiles;
+}
+
+function updateProfileController()
+{
+    $id = $_REQUEST['id_profile'];
+    $name = $_REQUEST['name'];
+    $avatar = $_REQUEST['avatar'];
+    $age_restriction = $_REQUEST['age_restriction'];
+
+    $ok = updateProfile($id, $name, $avatar, $age_restriction);
+
+    if ($ok) {
+        return [
+            "success" => true,
+            "message" => "Le profil '$name' a bien été modifié !"
+        ];
+    } else {
+        return [
+            "success" => false,
+            "message" => "Erreur lors de la modification dans la base."
+        ];
+    }
+}
+
+
 
 ?>

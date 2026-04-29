@@ -14,6 +14,7 @@
 
     <script type="module">
       import { DataMovie } from "./data/dataMovie.js";
+      import { DataProfile } from "./data/dataProfile.js";
 
       import { NavBar } from "./component/NavBar/script.js";
       import { Carrousel } from "./component/Carrousel/script.js";
@@ -22,6 +23,9 @@
       import { MovieCategory } from "./component/MovieCategory/script.js";
 
       let data = await DataMovie.requestMovies();
+
+      let profiles = [];
+      let age_active_profile = 0;
 
       // Controleur
       // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
@@ -35,7 +39,7 @@
       };
 
       C.handlerHome = async function () {
-        window.location.reload();
+        C.handlerHomeCategories();
       };
 
       C.handlerDetail = async function (id) {
@@ -46,16 +50,32 @@
       };
 
       C.handlerHomeCategories = async function () {
-        const categories = await DataMovie.requestCategories();
-        const allMovies = await DataMovie.requestMovies();
-        V.renderMovieCategory({
-          categories: categories,
-          movies: allMovies,
-        });
+        let data = await DataMovie.requestMovies(age_active_profile);
+        let zoneAffichage = document.querySelector("#content");
+        if (!data || data.length === 0) {
+          zoneAffichage.innerHTML = `<h2 style="text-align:center; margin-top:50px; color:white;">
+            Aucun film disponible pour votre tranche d'âge. 🍿
+        </h2>`;
+        } else {
+          V.renderMovieCategory(data);
+        }
       };
 
-      C.start = function () {
-        V.renderNavBar("C.handlerAbout()");
+      C.handlerSelectProfile = function () {
+        let selectElement = document.querySelector(".profile-selector");
+        let selectedId = parseInt(selectElement.value);
+        let selectedProfile = profiles.find(
+          (profil) => profil.id_profile === selectedId,
+        );
+        if (selectedProfile) {
+          age_active_profile = selectedProfile.age_restriction;
+        }
+        C.handlerHomeCategories();
+      };
+
+      C.start = async function () {
+        profiles = await DataProfile.read();
+        V.renderNavBar("C.handlerAbout()", "C.handlerHome()", profiles);
         C.handlerHomeCategories();
       };
 
@@ -69,9 +89,9 @@
        * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
        * formaté par le composant NavBar.
        */
-      V.renderNavBar = function (hAbout) {
+      V.renderNavBar = function (hAbout, hHome, profiles) {
         let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout);
+        header.innerHTML = NavBar.format(hAbout, hHome, profiles);
       };
 
       V.renderCarrousel = function (data, css = "") {
@@ -87,7 +107,9 @@
       V.renderMovieCategory = function (data) {
         let htmlGlobal = "";
         for (const cat of data.categories) {
-          const filteredMovies = data.movies.filter((m) => m.id_category === cat.id);
+          const filteredMovies = data.movies.filter(
+            (m) => m.id_category === cat.id,
+          );
           if (filteredMovies.length > 0) {
             let moviesCardsHtml = "";
             for (const movie of filteredMovies) {

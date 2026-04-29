@@ -1,0 +1,31 @@
+<div class="form__container">
+  <h2>Modifier un profil</h2>
+  
+  <label for="select_profile">Sélectionner un profil :</label>
+  <select id="select_profile" onchange="{{hSELECT}}">
+    <option value="" disabled selected>Choisir...</option>
+    {{options_profiles}}
+  </select>
+
+  <form class="edit-profile-form">
+    
+    <input type="hidden" id="edit_id" name="id_profile">
+    
+    <label for="edit_name">Nom du profil *</label>
+    <input type="text" id="edit_name" name="name" required>
+
+    <label for="edit_age">Restriction d'âge *</label>
+    <select id="edit_age" name="age_restriction" required>
+      <option value="0">Tous publics</option>
+      <option value="10">10+</option>
+      <option value="12">12+</option>
+      <option value="16">16+</option>
+      <option value="18">18+</option>
+    </select>
+
+    <label for="edit_avatar">URL de l'Avatar</label>
+    <input type="url" id="edit_avatar" name="avatar">
+
+    <button type="button" onclick="{{hUPDATE}}">Enregistrer les modifications</button>
+  </form>
+</div>
