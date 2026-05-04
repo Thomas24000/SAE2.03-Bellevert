@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue - Projet Vidéo</title>
+    <style>
+        /* Un petit peu de style pour faire pro */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #141414; /* Noir façon Netflix */
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #222;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        .links-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        /* Les boutons */
+        a {
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            transform: scale(1.05); /* Effet de zoom au survol */
+        }
+        .btn-app {
+            background-color: #E50914; /* Rouge cinématique */
+            color: white;
+        }
+        .btn-admin {
+            background-color: transparent;
+            color: white;
+            border: 2px solid #E50914;
+        }
+        .btn-admin:hover {
+            background-color: rgba(229, 9, 20, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎬 Bienvenue sur notre Plateforme</h1>
+        <p>Veuillez choisir votre espace de destination :</p>
+        
+        <div class="links-container">
+            <!-- MAGIE DES CHEMINS RELATIFS ICI -->
+            <a href="./app/" class="btn-app">🍿 Espace Utilisateur (App)</a>
+            <a href="./admin/" class="btn-admin">⚙️ Espace Administrateur</a>
+        </div>
+    </div>
+
+</body>
+</html>

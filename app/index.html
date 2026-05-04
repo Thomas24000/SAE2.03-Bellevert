@@ -45,7 +45,12 @@
 
       C.handlerDetail = async function (id) {
         let movieData = await DataMovie.requestMoviesDetails(id);
-        let html = MovieDetail.format(movieData);
+        let isFavorite = false;
+        if (id_active_profile) {
+          let mesFavoris = await DataMovie.getFavorites(id_active_profile);
+          isFavorite = mesFavoris.some((film) => film.id == id);
+        }
+        let html = MovieDetail.format(movieData, isFavorite);
         let zonePrincipale = document.querySelector("#content");
         zonePrincipale.innerHTML = html;
       };
@@ -53,12 +58,31 @@
       C.handlerHomeCategories = async function () {
         let data = await DataMovie.requestMovies(age_active_profile);
         let zoneAffichage = document.querySelector("#content");
-        if (!data || data.length === 0) {
+        let htmlFavoris = "";
+        if (id_active_profile) {
+          let mesFavoris = await DataMovie.getFavorites(id_active_profile);
+          
+          if (mesFavoris.length > 0) {
+            let cardsHtml = "";
+            for (const film of mesFavoris) {
+              cardsHtml += MovieCard.format(film); 
+            }
+            htmlFavoris = MovieCategory.format("⭐ Mes Favoris", cardsHtml);
+            
+          } else {
+            let messageVide = `<h3 style="color:#aaa; text-align:center; padding: 20px;">Votre liste de favoris est vide. ⭐</h3>`;
+            htmlFavoris = MovieCategory.format("⭐ Mes Favoris", messageVide);
+          }
+        }
+        if (!data || !data.categories || data.categories.length === 0) {
           zoneAffichage.innerHTML = `<h2 style="text-align:center; margin-top:50px; color:white;">
-            Aucun film disponible pour votre tranche d'âge. 🍿
-        </h2>`;
+              Aucun film disponible pour votre tranche d'âge. 🍿
+            </h2>`;
         } else {
           V.renderMovieCategory(data);
+        }
+        if (htmlFavoris !== "") {
+          zoneAffichage.insertAdjacentHTML("afterbegin", htmlFavoris);
         }
       };
 
@@ -88,13 +112,16 @@
         }
         let res = await DataMovie.addFavorite(id_active_profile, id_movie);
         alert(res.message);
-        let btnFav = document.querySelector(".btn-fav");
-        if (btnFav) {
-          btnFav.disabled = true;
-          btnFav.innerText = "Déjà dans vos favoris ⭐";
-          btnFav.style.backgroundColor = "gray";
-          btnFav.style.cursor = "not-allowed";
-        }
+        C.handlerDetail(id_movie);
+      };
+
+      C.handlerRemoveFavorite = async function (id_movie) {
+        if (!id_active_profile) return;
+
+        let res = await DataMovie.removeFavorite(id_active_profile, id_movie);
+        alert(res.message);
+
+        C.handlerDetail(id_movie);
       };
       // Vue (contient tout ce qui est relatif à l'affichage)
       window.V = {};

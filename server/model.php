@@ -180,4 +180,31 @@ function getFavorites($id_p) {
     return $stmt->fetchAll(PDO::FETCH_OBJ);
 }
 
+function removeFavorite($id_p, $id_m) {
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+    $sql = "DELETE FROM Favorite WHERE id_profile = :id_p AND id_movie = :id_m";
+    $stmt = $cnx->prepare($sql);
+    $stmt->bindParam(':id_p', $id_p);
+    $stmt->bindParam(':id_m', $id_m);
+    $stmt->execute();
+
+    return $stmt->rowCount(); 
+}
+
+function getFeaturedMovies($ageLimit) {
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+
+    if ($ageLimit == 0) {
+        $sql = "SELECT * FROM Movie WHERE is_featured = 1";
+        $stmt = $cnx->prepare($sql);
+    } else {
+        $sql = "SELECT * FROM Movie WHERE is_featured = 1 AND min_age <= :age";
+        $stmt = $cnx->prepare($sql);
+        $stmt->bindParam(':age', $ageLimit, PDO::PARAM_INT);
+    }
+    
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
 ?>

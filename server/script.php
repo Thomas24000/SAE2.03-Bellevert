@@ -51,9 +51,17 @@ if (isset($_REQUEST['todo'])) {
     case 'addFavorite':
       $data = addFavoriteController();
       break;
-      
+
     case 'readFavorites':
       $data = readFavoritesController();
+      break;
+
+    case 'removeFavorite':
+      $data = removeFavoriteController();
+      break;
+
+    case 'getFeatured':
+      $data = getFeaturedController();
       break;
 
     default:

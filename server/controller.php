@@ -158,6 +158,28 @@ function readFavoritesController()
     return getFavorites($id_p);
 }
 
+function removeFavoriteController() {
+    $id_p = $_REQUEST['id_profile'];
+    $id_m = $_REQUEST['id_movie'];
+    
+    $lignesSupprimees = removeFavorite($id_p, $id_m);
 
+    if ($lignesSupprimees > 0) {
+        return [
+            "success" => true,
+            "message" => "Le film a été retiré de vos favoris. 💔"
+        ];
+    } else {
+        return [
+            "success" => false, 
+            "message" => "Erreur : ce film n'était pas dans vos favoris."
+        ];
+    }
+}
+
+function getFeaturedController() {
+    $age = isset($_REQUEST['age']) ? $_REQUEST['age'] : 0;
+    return getFeaturedMovies($age);
+}
 
 ?>

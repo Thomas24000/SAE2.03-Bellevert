@@ -67,6 +67,23 @@ CREATE TABLE `Movie` (
   `min_age` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `Profile` (
+  `id_profile` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `age_restriction` int(11) NOT NULL DEFAULT 0,
+  `avatar` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_profile`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `Favorite` (
+  `id_profile` int(11) NOT NULL,
+  `id_movie` int(11) NOT NULL,
+  PRIMARY KEY (`id_profile`, `id_movie`),
+  FOREIGN KEY (`id_profile`) REFERENCES `Profile`(`id_profile`) ON DELETE CASCADE,
+  FOREIGN KEY (`id_movie`) REFERENCES `Movie`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Déchargement des données de la table `Movie`
 --
