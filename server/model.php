@@ -191,20 +191,92 @@ function removeFavorite($id_p, $id_m) {
     return $stmt->rowCount(); 
 }
 
-function getFeaturedMovies($ageLimit) {
+function getFeaturedMovie() {
     $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+    
+    $sql = "SELECT * FROM Movie WHERE is_featured = 1 ORDER BY RAND() LIMIT 1";
+    $stmt = $cnx->query($sql);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($ageLimit == 0) {
-        $sql = "SELECT * FROM Movie WHERE is_featured = 1";
-        $stmt = $cnx->prepare($sql);
-    } else {
-        $sql = "SELECT * FROM Movie WHERE is_featured = 1 AND min_age <= :age";
-        $stmt = $cnx->prepare($sql);
-        $stmt->bindParam(':age', $ageLimit, PDO::PARAM_INT);
+    if (!$result) {
+        $sql = "SELECT * FROM Movie LIMIT 1";
+        $stmt = $cnx->query($sql);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_OBJ);
+    return $result;
+}
+
+function getStatistics() {
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+    $stats = [];
+
+    $stmt = $cnx->query("SELECT COUNT(*) AS total FROM Profile");
+    $stats['total_profiles'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $stmt = $cnx->query("SELECT COUNT(*) AS total FROM Movie");
+    $stats['total_movies'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $stmt = $cnx->query("SELECT COUNT(*) AS total FROM Favorite");
+    $total_favs = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $stats['avg_favs'] = $stats['total_profiles'] > 0 ? round($total_favs / $stats['total_profiles'], 1) : 0;
+
+    $sql_movie = "SELECT m.name, COUNT(f.id_movie) AS fav_count 
+                  FROM Favorite f 
+                  INNER JOIN Movie m ON f.id_movie = m.id 
+                  GROUP BY f.id_movie 
+                  ORDER BY fav_count DESC LIMIT 1";
+    $stmt = $cnx->query($sql_movie);
+    $top_movie = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stats['top_movie'] = $top_movie ? $top_movie['name'] : "Aucun";
+
+    $sql_cat = "SELECT c.name, COUNT(f.id_movie) AS fav_count 
+                FROM Favorite f 
+                INNER JOIN Movie m ON f.id_movie = m.id 
+                INNER JOIN Category c ON m.id_category = c.id 
+                GROUP BY c.id 
+                ORDER BY fav_count DESC LIMIT 1";
+    $stmt = $cnx->query($sql_cat);
+    $top_cat = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stats['top_category'] = $top_cat ? $top_cat['name'] : "Aucune";
+
+    return $stats;
+}
+
+function searchMovies($keyword) {
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+
+    $sql = "SELECT * FROM Movie WHERE name LIKE :keyword ORDER BY name ASC";
+    $stmt = $cnx->prepare($sql);
+
+    $stmt->execute(['keyword' => '%' . $keyword . '%']);
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function searchMoviesAdmin($keyword) {
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+    $sql = "SELECT m.*, c.name as category_name 
+            FROM Movie m 
+            LEFT JOIN Category c ON m.id_category = c.id 
+            WHERE m.name LIKE :keyword 
+            ORDER BY m.name ASC";
+    $stmt = $cnx->prepare($sql);
+    $stmt->execute(['keyword' => '%' . $keyword . '%']);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function setMovieFeatured($id, $status) {
+    $cnx = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME . ";charset=utf8", DBLOGIN, DBPWD);
+    
+    $sql = "UPDATE Movie SET is_featured = :status WHERE id = :id";
+    $stmt = $cnx->prepare($sql);
+    
+    $status_int = ($status == '1' || $status === true || $status === 1) ? 1 : 0;
+    $reussite = $stmt->execute(['status' => $status_int, 'id' => $id]);
+    
+    return ['success' => $reussite];
 }
 
 ?>

@@ -60,9 +60,38 @@ if (isset($_REQUEST['todo'])) {
       $data = removeFavoriteController();
       break;
 
-    case 'getFeatured':
-      $data = getFeaturedController();
+    case 'getFeaturedMovie':
+      $data = getFeaturedMovieController();
       break;
+
+    case 'getStats':
+      $data = getStatsController();
+      break;
+
+    case 'searchMovies':
+      if (isset($_GET['query'])) {
+        $data = searchMoviesController($_GET['query']);
+      } else {
+        $data = [];
+      }
+      break;
+
+    case 'searchMoviesAdmin':
+      if (isset($_GET['query'])) {
+        $data = searchMoviesAdminController($_GET['query']);
+      } else {
+        $data = [];
+      }
+      break;
+
+    case 'setFeatured':
+      if (isset($_POST['id']) && isset($_POST['status'])) {
+        $data = setMovieFeaturedController($_POST['id'], $_POST['status']);
+      } else {
+        $data = ['success' => false];
+      }
+      break;
+
 
     default:
       echo json_encode(['success' => false, 'message' => '[error] Unknown todo value']);
@@ -77,8 +106,9 @@ if (isset($_REQUEST['todo'])) {
     exit();
   }
 
-  echo json_encode($data);
+
   http_response_code(200); // 200 == "OK"
+  echo json_encode($data);
   exit();
 
 }

@@ -1,0 +1,14 @@
+<div class="admin-row">
+    <div class="admin-row__info">
+        <strong>{{name}}</strong>
+        <span class="admin-row__category">🍿 {{category_name}}</span>
+    </div>
+    
+    <div class="admin-row__actions">
+        <label class="switch">
+            <input type="checkbox" id="chk_{{id}}" onchange="C.handlerToggleFeatured('{{id}}', this.checked)" {{checked}}>
+            <span class="slider round"></span>
+        </label>
+        <span class="admin-row__status" id="status_{{id}}">{{status_text}}</span>
+    </div>
+</div>

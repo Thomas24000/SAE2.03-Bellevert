@@ -15,11 +15,52 @@
 
     <section id="edit-form"></section>
 
+    <div style="padding: 20px">
+      <h2>Gérer le catalogue</h2>
+
+      <!-- Zone de recherche -->
+      <input
+        type="text"
+        id="adminSearchInput"
+        placeholder="Rechercher un film pour le mettre en avant..."
+        onkeyup="C.handlerAdminSearch()"
+        style="
+          width: 100%;
+          padding: 12px;
+          margin-bottom: 20px;
+          border-radius: 5px;
+        "
+      />
+
+      <!-- Zone de Notification (invisible par défaut) -->
+      <div
+        id="adminNotification"
+        style="
+          display: none;
+          padding: 15px;
+          background: #28a745;
+          color: white;
+          border-radius: 5px;
+          margin-bottom: 20px;
+          text-align: center;
+          font-weight: bold;
+        "
+      ></div>
+
+      <!-- Zone des résultats -->
+      <div id="adminMoviesList">
+        <p style="color: #aaa">
+          Tapez un titre de film pour commencer la recherche.
+        </p>
+      </div>
+    </div>
+
     <script type="module">
       import { Log } from "./component/Log/script.js";
       import { MovieForm } from "./component/MovieForm/script.js";
       import { AddProfil } from "./component/AddProfil/script.js";
       import { EditProfile } from "./component/EditProfile/script.js";
+      import { AdminMovieRow } from "./component/AdminMovieRow/script.js";
 
       import { DataMovie } from "./data/dataMovie.js";
       import { DataProfile } from "./data/dataProfile.js";
@@ -32,7 +73,7 @@
         V.renderLog("Démarrage de l'application");
         V.renderForm("C.handlerAddMovie()");
         V.renderFormProfil("C.handlerAddProfil()");
-        profiles = await DataProfile.read(); 
+        profiles = await DataProfile.read();
         V.renderEditProfil(
           "C.handlerSelectProfileToEdit()",
           "C.handlerUpdateProfile()",
@@ -83,7 +124,8 @@
         if (profilAEditer) {
           document.querySelector("#edit_id").value = profilAEditer.id_profile;
           document.querySelector("#edit_name").value = profilAEditer.name;
-          document.querySelector("#edit_age").value = profilAEditer.age_restriction;
+          document.querySelector("#edit_age").value =
+            profilAEditer.age_restriction;
           document.querySelector("#edit_avatar").value =
             profilAEditer.avatar || "";
         }
@@ -110,7 +152,46 @@
         }
       };
 
+      C.handlerAdminSearch = async function () {
+        let keyword = document.querySelector("#adminSearchInput").value.trim();
+        let zoneAffichage = document.querySelector("#adminMoviesList");
 
+        if (keyword.length === 0) {
+          zoneAffichage.innerHTML =
+            "<p style='color: #aaa;'>Tapez un titre de film pour commencer la recherche.</p>";
+          return;
+        }
+
+        let resultats = await DataMovie.searchMovies(keyword);
+
+        if (!resultats || resultats.length === 0) {
+          zoneAffichage.innerHTML = `<p style="color: red;">Aucun film ne correspond à votre recherche "${keyword}".</p>`;
+        } else {
+          let html = "";
+          for (const film of resultats) {
+            html += AdminMovieRow.format(film);
+          }
+          zoneAffichage.innerHTML = html;
+        }
+      };
+
+      C.handlerToggleFeatured = async function (id, isChecked) {
+        let result = await DataMovie.setFeatured(id, isChecked);
+
+        if (result.success) {
+          let statusText = document.querySelector(`#status_${id}`);
+          statusText.innerHTML = isChecked ? "⭐ Mis en avant" : "Standard";
+
+          let notif = document.querySelector("#adminNotification");
+          notif.innerHTML =
+            "✅ Le statut du film a été mis à jour avec succès.";
+          notif.style.display = "block";
+
+          setTimeout(() => {
+            notif.style.display = "none";
+          }, 3000);
+        }
+      };
 
       window.V = {};
 

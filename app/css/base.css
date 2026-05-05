@@ -9,3 +9,5 @@
 @import "../component/Carrousel/style.css" layer(components);
 @import "../component/MovieDetail/style.css" layer(components);
 @import "../component/MovieCategory/style.css" layer(components);
+@import "../component/EnAvant/style.css" layer(components);
+@import "../component/StatsBoard/style.css" layer(components);

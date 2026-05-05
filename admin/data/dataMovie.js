@@ -46,4 +46,23 @@ DataMovie.requestCategories = async function() {
     return data;
 };
 
+DataMovie.searchMovies = async function (keyword) {
+  let answer = await fetch(`${HOST_URL}/server/script.php?todo=searchMoviesAdmin&query=${encodeURIComponent(keyword)}`);
+  return await answer.json();
+};
+
+DataMovie.setFeatured = async function (id, status) {
+  let fd = new FormData();
+  fd.append('id', id);
+
+  fd.append('status', status ? 1 : 0);
+
+  let answer = await fetch(`${HOST_URL}/server/script.php?todo=setFeatured`, {
+    method: 'POST',
+    body: fd
+  });
+  return await answer.json();
+};
+
+
 export { DataMovie };

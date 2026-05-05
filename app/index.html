@@ -21,6 +21,9 @@
       import { MovieCard } from "./component/MovieCard/script.js";
       import { MovieDetail } from "./component/MovieDetail/script.js";
       import { MovieCategory } from "./component/MovieCategory/script.js";
+      import { EnAvant } from "./component/EnAvant/script.js";
+      import { Alert } from "./component/Alert/script.js";
+      import { StatsBoard } from "./component/StatsBoard/script.js";
 
       let data = await DataMovie.requestMovies();
 
@@ -56,33 +59,26 @@
       };
 
       C.handlerHomeCategories = async function () {
-        let data = await DataMovie.requestMovies(age_active_profile);
         let zoneAffichage = document.querySelector("#content");
-        let htmlFavoris = "";
-        if (id_active_profile) {
-          let mesFavoris = await DataMovie.getFavorites(id_active_profile);
-          
-          if (mesFavoris.length > 0) {
-            let cardsHtml = "";
-            for (const film of mesFavoris) {
-              cardsHtml += MovieCard.format(film); 
-            }
-            htmlFavoris = MovieCategory.format("⭐ Mes Favoris", cardsHtml);
-            
-          } else {
-            let messageVide = `<h3 style="color:#aaa; text-align:center; padding: 20px;">Votre liste de favoris est vide. ⭐</h3>`;
-            htmlFavoris = MovieCategory.format("⭐ Mes Favoris", messageVide);
-          }
-        }
-        if (!data || !data.categories || data.categories.length === 0) {
-          zoneAffichage.innerHTML = `<h2 style="text-align:center; margin-top:50px; color:white;">
-              Aucun film disponible pour votre tranche d'âge. 🍿
-            </h2>`;
+        let htmlFeatured = await C.buildFeaturedHtml(age_active_profile);
+        let htmlFavoris = await C.buildFavoritesHtml(id_active_profile);
+        let dataCatalogue = await DataMovie.requestMovies(age_active_profile);
+        if (
+          !dataCatalogue ||
+          !dataCatalogue.categories ||
+          dataCatalogue.categories.length === 0
+        ) {
+          zoneAffichage.innerHTML = AlertMessage.format(
+            "Aucun film disponible pour votre tranche d'âge. 🍿",
+          );
         } else {
-          V.renderMovieCategory(data);
+          V.renderMovieCategory(dataCatalogue);
         }
         if (htmlFavoris !== "") {
           zoneAffichage.insertAdjacentHTML("afterbegin", htmlFavoris);
+        }
+        if (htmlFeatured !== "") {
+          zoneAffichage.insertAdjacentHTML("afterbegin", htmlFeatured);
         }
       };
 
@@ -123,6 +119,80 @@
 
         C.handlerDetail(id_movie);
       };
+
+      C.buildFeaturedHtml = async function (age) {
+        let filmBrut = await DataMovie.getFeaturedMovie();
+
+        let filmAafficher = null;
+
+        if (Array.isArray(filmBrut)) {
+          filmAafficher = filmBrut[0];
+        } else if (filmBrut && filmBrut.id) {
+          filmAafficher = filmBrut;
+        } else if (filmBrut && filmBrut.data) {
+          filmAafficher = Array.isArray(filmBrut.data)
+            ? filmBrut.data[0]
+            : filmBrut.data;
+        }
+
+        if (filmAafficher) {
+          let htmlEnAvant = EnAvant.format(filmAafficher);
+          return htmlEnAvant; 
+        } else {
+          return ""; 
+        }
+      };
+
+      C.buildFavoritesHtml = async function (id_profile) {
+        if (!id_profile) return "";
+        let mesFavoris = await DataMovie.getFavorites(id_profile);
+        if (mesFavoris.length > 0) {
+          let cardsHtml = mesFavoris
+            .map((film) => MovieCard.format(film))
+            .join("");
+          return MovieCategory.format("⭐ Mes Favoris", cardsHtml);
+        } else {
+          let messageVide = Alert.format("Votre liste de favoris est vide. ⭐");
+          return MovieCategory.format("⭐ Mes Favoris", messageVide);
+        }
+      };
+
+      C.handlerStats = async function () {
+        let stats = await DataMovie.getStats();
+
+        let html = StatsBoard.format(stats);
+
+        let zonePrincipale = document.querySelector("#content");
+        zonePrincipale.innerHTML = html;
+      };
+
+      C.handlerSearch = async function () {
+        let champSaisie = document.querySelector("#searchInput");
+
+        let keyword = champSaisie.value.trim();
+        let zoneAffichage = document.querySelector("#content");
+        if (keyword.length === 0) {
+          C.handlerHomeCategories();
+          return;
+        }
+        let resultats = await DataMovie.searchMovies(keyword);
+        if (!resultats || resultats.length === 0) {
+          zoneAffichage.innerHTML = Alert.format(
+            `Aucun film ne correspond à votre recherche "${keyword}". 😕`,
+          );
+        } else {
+          let cardsHtml = "";
+          for (const film of resultats) {
+            cardsHtml += MovieCard.format(film);
+          }
+          let titreSection = `🔍 Résultats pour "${keyword}" (${resultats.length})`;
+          zoneAffichage.innerHTML = MovieCategory.format(
+            titreSection,
+            cardsHtml,
+          );
+        }
+      };
+
       // Vue (contient tout ce qui est relatif à l'affichage)
       window.V = {};
 

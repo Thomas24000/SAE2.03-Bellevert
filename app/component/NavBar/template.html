@@ -2,11 +2,30 @@
   <ul class="navbar__list">
     <li class="navbar__item" onclick="{{hHome}}">Home</li>
     <li class="navbar__item" onclick="{{hAbout}}">About</li>
+    
+    <!-- CORRECTION ICI : Emballé dans un <li> -->
+    <li class="navbar__item">
+      <a href="#" onclick="C.handlerStats()" style="color: inherit; text-decoration: none;">Statistiques</a>
+    </li>
+
     <li class="navbar__item">
       <select class="profile-selector" onchange="C.handlerSelectProfile()">
         <option value="" disabled selected>👤 Profil</option>
         {{profiles_options}}
       </select>
+    </li>
+    
+    <li class="navbar__item">
+      <div class="navbar__search">
+        <span class="navbar__search-icon">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          class="navbar__search-input"
+          placeholder="Rechercher un film..."
+          onkeyup="C.handlerSearch()"
+        />
+      </div>
     </li>
   </ul>
 </nav>

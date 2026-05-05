@@ -177,9 +177,24 @@ function removeFavoriteController() {
     }
 }
 
-function getFeaturedController() {
-    $age = isset($_REQUEST['age']) ? $_REQUEST['age'] : 0;
-    return getFeaturedMovies($age);
+function getFeaturedMovieController() {
+    return getFeaturedMovie();
+}
+
+function getStatsController() {
+    return getStatistics();
+}
+
+function searchMoviesController($keyword) {
+    return searchMovies($keyword);
+}
+
+function searchMoviesAdminController($keyword) {
+    return searchMoviesAdmin($keyword);
+}
+
+function setMovieFeaturedController($id, $status) {
+    return setMovieFeatured($id, $status);
 }
 
 ?>

@@ -48,8 +48,18 @@ DataMovie.removeFavorite = async function (id_profile, id_movie) {
   return await answer.json();
 };
 
-DataMovie.getFeatured = async function (age) {
-  let answer = await fetch(`${HOST_URL}/server/script.php?todo=getFeatured&age=${age}`);
+DataMovie.getFeaturedMovie = async function () {
+  let answer = await fetch(`${HOST_URL}/server/script.php?todo=getFeaturedMovie`, { cache: "no-store" });
+  return await answer.json();
+};
+
+DataMovie.getStats = async function () {
+  let answer = await fetch(`${HOST_URL}/server/script.php?todo=getStats`);
+  return await answer.json();
+};
+
+DataMovie.searchMovies = async function (keyword) {
+  let answer = await fetch(`${HOST_URL}/server/script.php?todo=searchMovies&query=${encodeURIComponent(keyword)}`);
   return await answer.json();
 };
 

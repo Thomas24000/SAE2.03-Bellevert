@@ -33,3 +33,28 @@
   color: var(--color-white); /* Le texte s'illumine en blanc pur */
   transform: translateY(-0.125rem); /* Le texte monte d'un tout petit millimètre (~2px) */
 }
+
+.navbar__search {
+    display: inline-flex;
+    align-items: center;
+    background-color: #333;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-left: 20px;
+}
+
+.navbar__search-icon {
+    color: #aaa;
+    margin-right: 8px;
+}
+
+.navbar__search-input {
+    background: transparent;
+    border: none;
+    color: white;
+}
+
+.navbar__search-input:focus {
+    width: 250px; /* Petit effet d'agrandissement sympa au clic */
+}
+
