@@ -10,6 +10,8 @@
   <body>
     <header id="header"></header>
 
+    <section id="featured"></section>
+
     <section id="content"></section>
 
     <script type="module">
@@ -31,15 +33,10 @@
       let age_active_profile = 0;
       let id_active_profile = null;
 
-      // Controleur
-      // Rappel, écrire window.C plutôt que let C est nécessaire pour tester depuis la console du navigateur
-      // Une fois l'application terminée, on pourrait remettre let C.
       window.C = {};
 
       C.handlerAbout = function () {
-        alert(
-          "Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !",
-        );
+        V.showAlert("Ceci est une base de projet pour la SAE2.03 édition 2025. Bonne chance !");
       };
 
       C.handlerHome = async function () {
@@ -53,33 +50,15 @@
           let mesFavoris = await DataMovie.getFavorites(id_active_profile);
           isFavorite = mesFavoris.some((film) => film.id == id);
         }
-        let html = MovieDetail.format(movieData, isFavorite);
-        let zonePrincipale = document.querySelector("#content");
-        zonePrincipale.innerHTML = html;
+        V.renderMovieDetail(movieData, isFavorite);
       };
 
       C.handlerHomeCategories = async function () {
-        let zoneAffichage = document.querySelector("#content");
         let htmlFeatured = await C.buildFeaturedHtml(age_active_profile);
         let htmlFavoris = await C.buildFavoritesHtml(id_active_profile);
         let dataCatalogue = await DataMovie.requestMovies(age_active_profile);
-        if (
-          !dataCatalogue ||
-          !dataCatalogue.categories ||
-          dataCatalogue.categories.length === 0
-        ) {
-          zoneAffichage.innerHTML = AlertMessage.format(
-            "Aucun film disponible pour votre tranche d'âge. 🍿",
-          );
-        } else {
-          V.renderMovieCategory(dataCatalogue);
-        }
-        if (htmlFavoris !== "") {
-          zoneAffichage.insertAdjacentHTML("afterbegin", htmlFavoris);
-        }
-        if (htmlFeatured !== "") {
-          zoneAffichage.insertAdjacentHTML("afterbegin", htmlFeatured);
-        }
+        
+        V.renderHomeCategories(htmlFeatured, htmlFavoris, dataCatalogue);
       };
 
       C.handlerSelectProfile = function () {
@@ -103,11 +82,11 @@
 
       C.handlerAddFavorite = async function (id_movie) {
         if (!id_active_profile) {
-          alert("Veuillez sélectionner un profil d'abord ! 👤");
+          V.showAlert("Veuillez sélectionner un profil d'abord ! 👤");
           return;
         }
         let res = await DataMovie.addFavorite(id_active_profile, id_movie);
-        alert(res.message);
+        V.showAlert(res.message);
         C.handlerDetail(id_movie);
       };
 
@@ -115,14 +94,13 @@
         if (!id_active_profile) return;
 
         let res = await DataMovie.removeFavorite(id_active_profile, id_movie);
-        alert(res.message);
+        V.showAlert(res.message);
 
         C.handlerDetail(id_movie);
       };
 
       C.buildFeaturedHtml = async function (age) {
         let filmBrut = await DataMovie.getFeaturedMovie();
-
         let filmAafficher = null;
 
         if (Array.isArray(filmBrut)) {
@@ -136,8 +114,7 @@
         }
 
         if (filmAafficher) {
-          let htmlEnAvant = EnAvant.format(filmAafficher);
-          return htmlEnAvant; 
+          return EnAvant.format(filmAafficher);
         } else {
           return ""; 
         }
@@ -159,23 +136,77 @@
 
       C.handlerStats = async function () {
         let stats = await DataMovie.getStats();
-
-        let html = StatsBoard.format(stats);
-
-        let zonePrincipale = document.querySelector("#content");
-        zonePrincipale.innerHTML = html;
+        V.renderStatsBoard(stats);
       };
 
       C.handlerSearch = async function () {
         let champSaisie = document.querySelector("#searchInput");
-
         let keyword = champSaisie.value.trim();
-        let zoneAffichage = document.querySelector("#content");
+        
         if (keyword.length === 0) {
           C.handlerHomeCategories();
           return;
         }
+        
         let resultats = await DataMovie.searchMovies(keyword);
+        V.renderSearchResults(keyword, resultats);
+      };
+
+      window.V = {};
+
+      V.showAlert = function (message) {
+        alert(message);
+      };
+
+      V.renderNavBar = function (hAbout, hHome, profiles) {
+        let header = document.querySelector("#header");
+        header.innerHTML = NavBar.format(hAbout, hHome, profiles);
+      };
+
+      V.renderMovieDetail = function (movieData, isFavorite) {
+        let detail = document.querySelector("#content");
+        detail.innerHTML = MovieDetail.format(movieData, isFavorite);
+      };
+
+      V.renderHomeCategories = function (htmlFeatured, htmlFavoris, dataCatalogue) {
+        let zoneAffichage = document.querySelector("#content");
+        zoneAffichage.innerHTML = "";
+
+        if (htmlFeatured !== "") {
+          zoneAffichage.insertAdjacentHTML("beforeend", htmlFeatured);
+        }
+        
+        if (htmlFavoris !== "") {
+          zoneAffichage.insertAdjacentHTML("beforeend", htmlFavoris);
+        }
+
+        if (!dataCatalogue || !dataCatalogue.categories || dataCatalogue.categories.length === 0) {
+          zoneAffichage.insertAdjacentHTML("beforeend", Alert.format("Aucun film disponible pour votre tranche d'âge. 🍿"));
+        } else {
+          let htmlGlobal = "";
+          for (const cat of dataCatalogue.categories) {
+            const filteredMovies = dataCatalogue.movies.filter(
+              (m) => m.id_category === cat.id,
+            );
+            if (filteredMovies.length > 0) {
+              let moviesCardsHtml = "";
+              for (const movie of filteredMovies) {
+                moviesCardsHtml += MovieCard.format(movie);
+              }
+              htmlGlobal += MovieCategory.format(cat.name, moviesCardsHtml);
+            }
+          }
+          zoneAffichage.insertAdjacentHTML("beforeend", htmlGlobal);
+        }
+      };
+
+      V.renderStatsBoard = function (stats) {
+        let zonePrincipale = document.querySelector("#content");
+        zonePrincipale.innerHTML = StatsBoard.format(stats);
+      };
+
+      V.renderSearchResults = function (keyword, resultats) {
+        let zoneAffichage = document.querySelector("#content");
         if (!resultats || resultats.length === 0) {
           zoneAffichage.innerHTML = Alert.format(
             `Aucun film ne correspond à votre recherche "${keyword}". 😕`,
@@ -193,51 +224,7 @@
         }
       };
 
-      // Vue (contient tout ce qui est relatif à l'affichage)
-      window.V = {};
-
-      /**
-       * V.renderNavBar
-       *
-       * Cette fonction est responsable de l'affichage de la barre de navigation (NavBar).
-       * Elle sélectionne l'élément HTML avec l'ID "header" et y insère le contenu
-       * formaté par le composant NavBar.
-       */
-      V.renderNavBar = function (hAbout, hHome, profiles) {
-        let header = document.querySelector("#header");
-        header.innerHTML = NavBar.format(hAbout, hHome, profiles);
-      };
-
-      V.renderCarrousel = function (data, css = "") {
-        let carrousel = document.querySelector("#content");
-        carrousel.innerHTML = Carrousel.format(data, css);
-      };
-
-      V.renderMovieDetail = function (hDetail, css = "") {
-        let detail = document.querySelector("#content");
-        detail.innerHTML = MovieDetail.format(hDetail, css);
-      };
-
-      V.renderMovieCategory = function (data) {
-        let htmlGlobal = "";
-        for (const cat of data.categories) {
-          const filteredMovies = data.movies.filter(
-            (m) => m.id_category === cat.id,
-          );
-          if (filteredMovies.length > 0) {
-            let moviesCardsHtml = "";
-            for (const movie of filteredMovies) {
-              moviesCardsHtml += MovieCard.format(movie);
-            }
-            htmlGlobal += MovieCategory.format(cat.name, moviesCardsHtml);
-          }
-        }
-        let zonePrincipale = document.querySelector("#content");
-        zonePrincipale.innerHTML = htmlGlobal;
-      };
-
-      C.start(); // Démarre l'application
+      C.start();
     </script>
   </body>
 </html>
-<script type="module"></script>

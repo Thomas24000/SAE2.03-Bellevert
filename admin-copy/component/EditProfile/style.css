@@ -1,0 +1,78 @@
+.form__container {
+  max-width: 35rem;
+  margin: 3rem auto;
+  padding: 0 2rem;
+  font-family: var(--ff-sans);
+  color: var(--color-fg);
+}
+
+.form__container h2 {
+  margin: 0 0 2rem 0;
+  font-size: 2rem;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+
+.form__container label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-gray-light);
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.form__container label[for="select_profile"] {
+  margin-top: 0;
+}
+
+.form__container select,
+.form__container input {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--color-gray-dark);
+  border: 0.125rem solid transparent;
+  border-radius: 0.5rem;
+  color: var(--color-white);
+  font-family: var(--ff-sans);
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form__container select:focus,
+.form__container input:focus {
+  border-color: var(--color-btn);
+}
+
+.form__container select option {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.edit-profile-form {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 0.0625rem solid var(--color-gray-dark);
+}
+
+.edit-profile-form button {
+  display: block;
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1.125rem;
+  background-color: var(--color-btn);
+  color: var(--color-black);
+  font-family: var(--ff-sans);
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.edit-profile-form button:hover {
+  transform: scale(1.02);
+}

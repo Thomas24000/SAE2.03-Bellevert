@@ -1,0 +1,158 @@
+.detail__container {
+  display: flex;
+  gap: 4rem;
+  padding: 4rem 2.5rem;
+  max-width: 75rem;
+  margin: 0 auto;
+  font-family: var(--ff-sans);
+  color: var(--color-fg);
+}
+
+.detail__left {
+  flex: 0 0 22rem;
+}
+
+.detail__poster {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5);
+}
+
+.detail__right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.detail__title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.detail__title-light {
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.detail__status {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-btn); /* Utilise ton jaune T-STREAM */
+  margin: 0 0 0.25rem 0;
+}
+
+.detail__meta {
+  font-size: 1rem;
+  color: var(--color-gray-light);
+  margin: 0 0 1.5rem 0;
+}
+
+.detail__synopsis {
+  font-size: 1.125rem;
+  color: var(--color-white);
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+  max-width: 50rem;
+}
+
+.detail__actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.detail__btn-play {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-btn);
+  color: var(--color-black);
+  font-family: var(--ff-sans);
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.detail__btn-play .icon-play {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+
+.detail__btn-fav {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-black);
+  color: var(--color-fg);
+  font-family: var(--ff-sans);
+  font-size: 1.125rem;
+  font-weight: 600;
+  border: 0.0625rem solid var(--color-fg);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+
+.detail__btn-fav::before {
+  content: "";
+  display: block;
+  width: 0.625rem;
+  height: 0.625rem;
+  background-color: #E50914; 
+  border-radius: 50%;
+}
+
+.detail__btn-play:hover {
+  transform: scale(1.05);
+}
+
+.detail__btn-fav:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.detail__trailer {
+  width: 100%;
+  max-width: 43.75rem;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 53.125em) {
+  .detail__container {
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 2rem;
+  }
+
+  .detail__left {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 18.75rem;
+    margin: 0 auto;
+  }
+
+  .detail__right {
+    align-items: center;
+    text-align: center;
+  }
+
+  .detail__actions {
+    justify-content: center;
+  }
+}

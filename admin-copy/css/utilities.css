@@ -1,0 +1,16 @@
+.font-sans {
+  font-family: var(--ff-sans);
+}
+
+.font-mono {
+  font-family: Courier, monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--ff-sans);
+  min-height: 100vh;
+}

@@ -1,0 +1,92 @@
+.form__container {
+  max-width: 35rem;
+  margin: 3rem auto;
+  padding: 0 2rem;
+  font-family: var(--ff-sans);
+  color: var(--color-fg);
+}
+
+.form__container h2 {
+  margin: 0 0 2rem 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-white);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.add-profile {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-profile label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-gray-light);
+  margin-bottom: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.add-profile label:first-of-type {
+  margin-top: 0;
+}
+
+.add-profile input,
+.add-profile select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background-color: var(--color-gray-dark);
+  border: 0.125rem solid transparent;
+  border-radius: 0.5rem;
+  color: var(--color-white);
+  font-family: var(--ff-sans);
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.add-profile input:focus,
+.add-profile select:focus {
+  border-color: var(--color-btn);
+}
+
+.form__container select option {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.add-profile .btn-submit {
+  margin-top: 2rem;
+  padding: 1rem 1.75rem;
+  background-color: var(--color-btn);
+  color: var(--color-black);
+  font-family: var(--ff-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: opacity 0.2s ease;
+}
+
+.add-profile .btn-submit:hover {
+  opacity: 0.9;
+}
+
+@media screen and (max-width: 48em) {
+  .form__container {
+    padding: 0 1rem;
+    margin: 2rem auto;
+  }
+  
+  .form__container h2 {
+    font-size: 1.5rem;
+  }
+  
+  .add-profile .btn-submit {
+    align-self: stretch;
+  }
+}

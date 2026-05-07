@@ -1,0 +1,106 @@
+.stats-board {
+  padding: 3.125rem 2.5rem;
+  margin: 2.5rem;
+  background-color: var(--color-bg);
+  border-radius: 1rem;
+  font-family: var(--ff-sans);
+}
+
+.stats-board__title {
+  text-align: center;
+  color: var(--color-fg);
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 3.125rem 0;
+  text-transform: uppercase;
+}
+
+.stats-board__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
+  gap: 1.875rem;
+}
+
+.stats-card {
+  background-color: var(--color-gray-dark);
+  border-radius: 1rem;
+  padding: 1.875rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.4);
+}
+
+.stats-card:hover {
+  transform: translateY(-0.625rem);
+  box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.6);
+}
+
+.stats-card__icon {
+  font-size: 3rem;
+  margin-bottom: 0.9375rem;
+}
+
+.stats-card__value {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--color-btn);
+  margin: 0 0 0.625rem 0;
+  line-height: 1.1;
+}
+
+.stats-card__value.text-medium {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  min-height: 3.85rem;
+}
+
+.stats-card__label {
+  color: var(--color-gray-light);
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.0625rem;
+}
+
+.stats-card.highlight {
+  border: 0.125rem solid var(--color-btn);
+  background-color: rgba(255, 204, 0, 0.05);
+}
+
+@media screen and (max-width: 53.125em) {
+  .stats-board {
+    margin: 1.25rem 1rem;
+    padding: 1.875rem 1.25rem;
+  }
+
+  .stats-board__title {
+    font-size: 1.75rem;
+    margin-bottom: 1.875rem;
+  }
+
+  .stats-board__grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .stats-card {
+    padding: 1.25rem;
+  }
+
+  .stats-card__icon {
+    font-size: 2.5rem;
+  }
+
+  .stats-card__value {
+    font-size: 2.5rem;
+  }
+
+  .stats-card__value.text-medium {
+    font-size: 1.25rem;
+    min-height: auto;
+  }
+}

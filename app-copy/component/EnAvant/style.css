@@ -1,0 +1,101 @@
+.enavant__container {
+  display: flex;
+  align-items: center;
+  margin: 1.25rem 2.5rem;
+  padding: 3.125rem 2.5rem;
+  background-color: var(--color-bg);
+  gap: 3rem;
+  border-radius: 1rem;
+  font-family: var(--ff-sans);
+}
+
+.enavant__poster {
+  flex-shrink: 0;
+  width: 22rem;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.8);
+}
+
+.enavant__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 37.5rem;
+}
+
+.enavant__badge {
+  margin-bottom: 1.25rem;
+  padding: 0.3rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  letter-spacing: 0.06rem;
+  background-color: var(--color-btn);
+  color: var(--color-black);
+  text-transform: uppercase;
+}
+
+.enavant__title {
+  margin: 0 0 1.25rem 0;
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--color-fg);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.enavant__desc {
+  margin: 0 0 2.5rem 0;
+  font-size: 1.25rem;
+  color: var(--color-gray-light);
+  line-height: 1.5;
+}
+
+.enavant__btn {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.875rem;
+  background-color: var(--color-fg);
+  color: var(--color-bg);
+  font-family: var(--ff-sans);
+  font-size: 1.125rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  gap: 0.625rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.enavant__btn:hover {
+  transform: scale(1.05);
+  background-color: var(--color-gray-light);
+}
+
+@media screen and (max-width: 53.125em) {
+  .enavant__container {
+    flex-direction: column;
+    margin: 1rem;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .enavant__poster {
+    width: 100%;
+    max-width: 16rem;
+  }
+
+  .enavant__content {
+    align-items: center;
+  }
+
+  .enavant__title {
+    font-size: 2.5rem;
+  }
+
+  .enavant__desc {
+    font-size: 1rem;
+  }
+}

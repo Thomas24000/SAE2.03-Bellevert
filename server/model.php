@@ -198,13 +198,7 @@ function getFeaturedMovie() {
     $stmt = $cnx->query($sql);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$result) {
-        $sql = "SELECT * FROM Movie LIMIT 1";
-        $stmt = $cnx->query($sql);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    
-    return $result;
+    return $result ? $result : [];
 }
 
 function getStatistics() {

@@ -1,0 +1,144 @@
+.faq-container {
+  max-width: 62.5rem;
+  margin: 3.125rem auto;
+  padding: 0 2.5rem;
+  font-family: var(--ff-sans);
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+}
+
+.faq-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 1.5rem 0;
+}
+
+.faq-item {
+  border-bottom: 0.0625rem solid var(--color-gray-dark);
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-gray-light);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.faq-item[open] .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0 0 1.5rem 0;
+  color: var(--color-gray-light);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.footer {
+  background-color: var(--color-bg);
+  padding: 4rem 2.5rem;
+  border-top: 0.0625rem solid var(--color-gray-dark);
+  font-family: var(--ff-sans);
+}
+
+.footer-container {
+  max-width: 87.5rem;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-btn);
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.0625rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+}
+
+.footer-title {
+  color: var(--color-fg);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem 0;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.footer-list a {
+  color: var(--color-gray-light);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.footer-list a:hover {
+  color: var(--color-fg);
+}
+
+@media screen and (max-width: 64em) {
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 48em) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 30em) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .footer-logo {
+    margin-bottom: 2rem;
+  }
+}
+
+@media screen and (max-width: 53.125em) {
+  .faq-container {
+    padding: 0 1.25rem;
+    margin: 2rem auto;
+  }
+  
+  .faq-question {
+    font-size: 1rem;
+  }
+  
+  .faq-title {
+    font-size: 1.25rem;
+  }
+}

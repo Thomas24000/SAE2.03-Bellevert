@@ -1,0 +1,27 @@
+<div class="detail__container">
+  <div class="detail__left">
+    <img class="detail__poster" src="{{image}}" alt="Affiche de {{titre}}" />
+  </div>
+  
+  <div class="detail__right">
+    <h1 class="detail__title">{{titre}} <span class="detail__title-light">en streaming & replay</span></h1>
+    
+    <p class="detail__status">Disponible sur Molotov.TV</p>
+    <p class="detail__meta">Films en streaming • {{date}} • {{age}}</p>
+    
+    <p class="detail__synopsis">{{synopsis}}</p>
+    
+    <div class="detail__actions">
+      <button class="detail__btn-play">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon-play">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        Regarder
+      </button>
+      
+      {{bouton_favori}}
+    </div>
+    
+    <iframe class="detail__trailer" src="{{trailer}}" alt="trailer"></iframe>
+  </div>
+</div>

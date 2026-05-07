@@ -1,0 +1,24 @@
+@layer reset, variables, components, utilities;
+
+@import "./reset.css" layer(reset);
+@import "./variables.css" layer(variables);
+@import "./utilities.css" layer(utilities);
+
+@import "../component/NavBar/style.css" layer(components);
+@import "../component/MovieCard/style.css" layer(components);
+@import "../component/Carrousel/style.css" layer(components);
+@import "../component/MovieDetail/style.css" layer(components);
+@import "../component/MovieCategory/style.css" layer(components);
+@import "../component/EnAvant/style.css" layer(components);
+@import "../component/StatsBoard/style.css" layer(components);
+@import "../component/Footer/style.css" layer(components);
+
+
+body{
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--ff-sans);
+    margin: 0;
+    padding-top: 4.375rem;
+    overflow-x: hidden;
+}
